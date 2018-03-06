@@ -1,0 +1,78 @@
+.g-root, .g-root div {
+    box-sizing: border-box;
+}
+.g-root {
+    position: relative;
+    overflow-x: hidden;
+}
+  /** Header **/
+  .g-header {
+    position: absolute;
+    left: 0px;
+    background-image: linear-gradient(white, lightgrey);
+  }
+
+    .g-header-viewport {
+      width: 100%;
+      position: absolute;
+      left: 0px;
+      height: 100%;
+    }
+      .g-header-container {
+        width: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        height: 100%;
+      }
+        .g-header-container .g-row {
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          overflow: hidden;
+        }
+          .g-header-container .g-cell {
+            position: absolute;
+            left: 0px;
+            border: 1px solid transparent;
+            padding-left: 11px;
+            padding-right: 11px;
+          }
+    /** Header **/    
+
+    /** Body **/
+    .g-body {
+      position: absolute;
+      left: 0px;
+    }
+
+      .g-body-viewport {
+        position: absolute;
+        left: 0px;
+        overflow-y: auto;
+      }
+        .g-body-container {
+          width: 100%;
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          height: 100%;
+        }
+          .g-row {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            overflow: hidden;
+          }
+          .g-row.even {
+            background:#f6f6f6;
+          }
+            .g-body-container .g-cell {
+              position: absolute;
+              left: 0px;
+              border: 1px solid transparent;
+              padding-left: 11px;
+              padding-right: 11px;
+              border-right: 1px dotted silver;
+            }
+    /** Body **/                    

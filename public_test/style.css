@@ -1,0 +1,59 @@
+body {
+    font-family: Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+.g-root {
+    width: 300px;/** 400px + bottom scrollbar (10px) **/
+    height: 150px;/** 175px + bottom scrollbar (10px) **/
+}
+    .g-header {
+        width: 400px;/** 400px + bottom scrollbar (10px) **/
+        height: 25px;
+    }
+
+    .g-body {
+        top: 25px;
+        width: 400px;/** 400px + bottom scrollbar (10px) **/
+        height: 125px;/** table height (150px - 25 px header) **/
+    }
+    .g-body-viewport {
+        width: 300px;
+        height: 125px;
+    }
+        .g-row {
+            width: 400px;
+            height: 25px;
+        }
+            .g-cell {
+                width: 100px;
+                line-height: 23px;
+            }
+                .g-header-container .cell-1, .g-body-container .cell-1 {
+                    left: 0px;
+                }
+                .g-header-container .cell-2, .g-body-container .cell-2 {
+                    left: 100px;
+                }
+                .g-header-container .cell-3, .g-body-container .cell-3 {
+                    left: 200px;
+                }
+                .g-header-container .cell-4, .g-body-container .cell-4 {
+                    left: 300px;
+                }
+
+        .row-2 {
+            top: 25px;
+        }   
+        .row-3 {
+            top: 50px;
+        }    
+        .row-4 {
+            top: 75px;
+        }
+        .row-5 {
+            top: 100px;
+        }
+        .row-6 {
+            top: 125px;
+        }
