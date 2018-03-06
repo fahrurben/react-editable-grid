@@ -63,8 +63,8 @@ class App extends Component {
       <div className="App">
         <ReactEditableGrid 
           data={this.state.data}
-          gridWidth={300}
-          gridHeight={200}
+          gridWidth="300px"
+          gridHeight="150px"
           rowOffsetHeight={25}
           headerOffsetHeight={25}
           columns={this.columns}

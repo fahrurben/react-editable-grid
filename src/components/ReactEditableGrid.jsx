@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import RowHeader from './RowHeader';
+import Row from './Row';
 
 class ReactEditableGrid extends Component {
 
@@ -9,7 +10,8 @@ class ReactEditableGrid extends Component {
 
     this.state = {
       data: props.data,
-      gridOffsetWidth: 0
+      gridOffsetWidth: 0,
+      headerOffsetLeft: 0
     };
 
     this.gridOffsetWidth = 0;
@@ -18,7 +20,6 @@ class ReactEditableGrid extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (typeof nextProps.data !== 'undefined') {
-      console.log(nextProps);
       this.setState({ data: nextProps.data });
     }
   }
@@ -28,64 +29,69 @@ class ReactEditableGrid extends Component {
     this.gridOffsetHeight = this.rootRef && this.rootRef.offsetHeight;
   }
 
+  bodyViewOnScroll(e) {
+    let scrollLeft = -1 * e.target.scrollLeft;
+    this.setState({headerOffsetLeft: scrollLeft});
+  }
+
   render() {
     let data = this.state.data;
     let columns = this.props.columns;
 
     let rootStyle = {
-      width: '20%',
-      height: '100%'
+      width: this.props.gridWidth,
+      height: this.props.gridHeight
+    };
+
+    let headStyle = {
+      top: '0px',
+      width: this.gridOffsetWidth + 'px',
+      height: this.props.headerOffsetHeight + 'px'
+    };
+
+    let headViewStyle = {
+      top: '0px',
+      left: this.state.headerOffsetLeft + 'px',
+      width: this.gridOffsetWidth + 'px',
+      height: this.props.headerOffsetHeight + 'px'
     };
 
     let bodyViewStyle = {
+      top: this.props.headerOffsetHeight + 'px',
       width: this.gridOffsetWidth + 'px',
-      height: this.gridOffsetHeight + 'px'
+      height: (this.gridOffsetHeight - this.props.headerOffsetHeight) + 'px'
     };
-
-    let rowTotalWidth = columns[0] && columns.reduce((accumulator, column) => accumulator + column.width, 0);
+    
 
     return (
       <div className="g-root" style={rootStyle} ref={(node) => {this.rootRef = node;}} >
+        <div className="g-header" style={headStyle}>
+          <div className="g-header-viewport" style={headViewStyle}>
+            <div className="g-header-container">
+              <RowHeader
+                headerOffsetHeight={this.props.headerOffsetHeight}
+                columns={this.props.columns}
+              />
+            </div>
+          </div>
+        </div>
         <div className="g-body">
-          <div className="g-body-viewport" style={bodyViewStyle}>
+          <div className="g-body-viewport" 
+            style={bodyViewStyle} 
+            onScroll={this.bodyViewOnScroll.bind(this)}>
             <div className="g-body-container">
               {
                 data &&
                 ( 
                   data.map((row, i) => {
-
-                    let rowStyle = {
-                      top: (i * this.props.rowOffsetHeight + this.props.headerOffsetHeight) + 'px',
-                      width: rowTotalWidth + 'px',
-                      height: this.props.rowOffsetHeight + 'px'
-                    };
-
-                    let rowClassName = classNames({
-                      'g-row': true,
-                      'even': (i % 2 === 0)
-                    });
-
-                    let tds = columns.map((column,j) => {
-                      let leftPos = 0;
-                      let value = row[column.accessor];
-
-                      for (let x = 0; x < j; x++) {
-                        leftPos += columns[x].width;
-                      }
-
-                      let colStyle = {
-                        width: column.width + 'px',
-                        height: this.props.rowOffsetHeight + 'px',
-                        left: leftPos + 'px'
-                      };
-                      
-                      return (<div className="g-cell" style={colStyle}>{value}</div>);
-                    });
-
+                    
                     let rowRender = (
-                      <div className={rowClassName} style={rowStyle}>
-                        {tds}
-                      </div>
+                      <Row
+                        rowData={row}
+                        rowIndex={i}
+                        rowOffsetHeight={this.props.rowOffsetHeight}
+                        columns={columns}
+                      />
                     );
 
                     return rowRender;
@@ -102,15 +108,15 @@ class ReactEditableGrid extends Component {
 
 ReactEditableGrid.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),
-  gridWidth: PropTypes.number.isRequired,
-  gridHeight: PropTypes.number.isRequired,
+  gridWidth: PropTypes.string.isRequired,
+  gridHeight: PropTypes.string.isRequired,
   rowOffsetHeight: PropTypes.number.isRequired,
   headerOffsetHeight: PropTypes.number.isRequired,
   columns: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     accessor: PropTypes.string.isRequired,
-    width: PropTypes.string.optional
+    width: PropTypes.number.isRequired
   })).isRequired
 };
 
